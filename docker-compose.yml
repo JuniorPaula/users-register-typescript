@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  api_user:
+    container_name: api_user
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: user_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 5435:5432
