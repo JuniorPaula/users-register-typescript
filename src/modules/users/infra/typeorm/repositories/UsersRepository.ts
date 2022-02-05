@@ -1,24 +1,32 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { getRepository, Repository } from 'typeorm';
 import User from '../entities/User';
 
-/** User customer repository from typeorm */
-@EntityRepository(User)
-class UsersRepository extends Repository<User> {
-  /** find user by name */
-  async findByName(name: string): Promise<User | undefined> {
-    const user = await this.findOne({ where: { name } });
+class UsersRepository implements IUsersRepository {
+  private ormRepository: Repository<User>;
+
+  constructor() {
+    this.ormRepository = getRepository(User);
+  }
+
+  async create({ name, email, password }: ICreateUser): Promise<User> {
+    const user = this.ormRepository.create({ name, email, password });
+
+    await this.ormRepository.save(user);
+
     return user;
   }
 
-  /** find user by id */
-  async findByid(id: string): Promise<User | undefined> {
-    const user = await this.findOne({ where: { id } });
+  async save(user: User): Promise<User> {
+    await this.ormRepository.save(user);
+
     return user;
   }
 
   /** find user by email */
   async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.findOne({ where: { email } });
+    const user = await this.ormRepository.findOne({ where: { email } });
     return user;
   }
 }
