@@ -7,3 +7,5 @@ const usersController = new UsersController();
 
 userRoutes.get('/', usersController.index);
 userRoutes.post('/', userVerify, usersController.create);
+
+export default userRoutes;
