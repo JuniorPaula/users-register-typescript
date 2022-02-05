@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import SessionController from '../controllers/SessionController';
-import { sessionVerify } from '../middlewares/sessionVerify';
+import { sessionVerify } from '../../../middlewares/sessionVerify';
 
 const sessionRoutes = Router();
 const sessionController = new SessionController();

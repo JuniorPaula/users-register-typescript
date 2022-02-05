@@ -1,7 +1,7 @@
 import { instanceToInstance } from 'class-transformer';
 import { Request, Response } from 'express';
-import CreateUserService from '../services/CreateUserService';
-import ListUserService from '../services/ListUserService';
+import CreateUserService from '../../../services/CreateUserService';
+import ListUserService from '../../../services/ListUserService';
 
 export default class UsersController {
   /** return all users[] */
