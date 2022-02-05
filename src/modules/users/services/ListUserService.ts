@@ -1,11 +1,11 @@
-import { getCustomRepository } from 'typeorm';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
 
 class ListUserService {
+  constructor(private usersRepositoty: IUsersRepository) {}
+
   async execute(): Promise<User[]> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const users = await usersRepository.find();
+    const users = await this.usersRepositoty.find();
     return users;
   }
 }

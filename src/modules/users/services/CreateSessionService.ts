@@ -1,28 +1,18 @@
 import 'dotenv/config';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import { getCustomRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
-import User from '../infra/typeorm/entities/User';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
-
-interface IRequest {
-  email: string;
-  password: string;
-}
-
-interface IResponse {
-  user: User;
-  token: string;
-}
+import { ICreateSession } from '../domain/models/ICreateSession';
+import { ILoggIn } from '../domain/models/ILoggIn';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
 class CreateSessionService {
-  async execute({ email, password }: IRequest): Promise<IResponse> {
-    const usersRepository = getCustomRepository(UsersRepository);
+  constructor(private usersRepositoty: IUsersRepository) {}
 
+  async execute({ email, password }: ILoggIn): Promise<ICreateSession> {
     /** get user by email */
-    const user = await usersRepository.findByEmail(email);
+    const user = await this.usersRepositoty.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect email', 401);
