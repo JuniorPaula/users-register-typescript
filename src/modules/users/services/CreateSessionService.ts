@@ -1,8 +1,9 @@
 import 'dotenv/config';
-import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
+import AppError from '@shared/errors/AppError';
+import authConfig from '@config/auth';
 import User from '../typeorm/entities/User';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 
@@ -33,9 +34,10 @@ class CreateSessionService {
       throw new AppError('Incorrect password', 401);
     }
 
-    const token = sign({}, '7a31ad71382c3b65f9d48692345a144f', {
+    /** generate user token */
+    const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
     return { user, token };
