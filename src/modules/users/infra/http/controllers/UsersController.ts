@@ -2,6 +2,7 @@ import { instanceToInstance } from 'class-transformer';
 import { Request, Response } from 'express';
 import CreateUserService from '../../../services/CreateUserService';
 import ListUserService from '../../../services/ListUserService';
+import UsersRepository from '../../typeorm/repositories/UsersRepository';
 
 export default class UsersController {
   /** return all users[] */
@@ -17,7 +18,8 @@ export default class UsersController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
 
-    const createUser = new CreateUserService();
+    const userRepository = new UsersRepository();
+    const createUser = new CreateUserService(userRepository);
 
     const user = await createUser.execute({
       name,
