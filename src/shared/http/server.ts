@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import 'dotenv/config';
+import 'express-async-errors';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '../typeorm';
@@ -13,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
+app.use(errors());
 
 /** middleware to intercept all errors */
 app.use(
@@ -24,6 +27,7 @@ app.use(
       });
     }
 
+    console.log(error);
     return response.status(500).json({
       status: 'error',
       message: 'Internal server error.',
