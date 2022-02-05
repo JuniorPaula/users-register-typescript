@@ -6,9 +6,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { IUsers } from '@modules/users/domain/models/IUsers';
 
 @Entity('users')
-class User {
+class User implements IUsers {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
